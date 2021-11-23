@@ -16,7 +16,7 @@ class SankaTest(TestCase):
         for i in range(num_calls):
             function()
 
-        assert function('ya dead?') == num_calls
+        assert function(Sanka.YaDead) == num_calls
 
     def test_count_calls_for_function_with_args(self):
 
@@ -29,5 +29,5 @@ class SankaTest(TestCase):
         for i in range(num_calls):
             function('takes', 'some_args')
 
-        assert function('ya dead?') == num_calls
+        assert function(Sanka.YaDead) == num_calls
 
