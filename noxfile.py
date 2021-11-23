@@ -1,3 +1,4 @@
+import git
 import nox
 
 
@@ -27,4 +28,20 @@ def tests(session):
     )
     session.run('coverage', 'report', '-m')
     session.run('coverage', 'xml')
+
+
+@nox.session(name=f'build-{PROJECT_NAME}', reuse_venv=True)
+def build(session):
+    session.install('.')
+    repo = git.Repo(search_parent_directories=True)
+    version = repo.git.describe('--tags')
+    session.run('python', 'setup.py', 'sdist')
+
+
+# TODO (withtwoemms) -- silence output
+@nox.session(name='version')
+def version(session):
+    repo = git.Repo(search_parent_directories=True)
+    version = repo.git.describe('--tags')
+    print(version)
 
