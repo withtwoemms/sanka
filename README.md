@@ -1,5 +1,8 @@
 # sanka
-a function decorator for surfacing dead code
+> a function decorator for surfacing dead code
+
+[![tests](https://github.com/withtwoemms/sanka/workflows/tests/badge.svg)](https://github.com/withtwoemms/sanka/actions?query=workflow%3Atests)
+[![publish](https://github.com/withtwoemms/sanka/workflows/publish/badge.svg)](https://github.com/withtwoemms/sanka/actions?query=workflow%3Apublish)
 
 # Setup
 Ensure `nox` is installed.

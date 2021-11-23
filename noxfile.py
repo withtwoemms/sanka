@@ -28,3 +28,12 @@ def tests(session):
     session.run('coverage', 'report', '-m')
     session.run('coverage', 'xml')
 
+
+@nox.session(name=f'build-{PROJECT_NAME}', reuse_venv=True)
+def build(session):
+    session.install('.')
+    session.run('python', 'setup.py', 'sdist')
+
+
+# TODO (withtwoemms) -- leverage gitpython to show version on-demand
+
