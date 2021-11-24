@@ -8,7 +8,7 @@ setup(
     author='Emmanuel I. Obi',
     maintainer='Emmanuel I. Obi',
     maintainer_email='withtwoemms@gmail.com',
-    url='https://github.com/withtwoemms/ucon',
+    url='https://github.com/withtwoemms/sanka',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
