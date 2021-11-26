@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from sanka import Sanka
+from sanka import YaDead
 
 
 class SankaTest(TestCase):
@@ -16,7 +17,7 @@ class SankaTest(TestCase):
         for i in range(num_calls):
             function()
 
-        assert function(Sanka.YaDead) == num_calls
+        assert function(YaDead) == num_calls
 
     def test_count_calls_for_function_with_args(self):
 
@@ -29,5 +30,5 @@ class SankaTest(TestCase):
         for i in range(num_calls):
             function('takes', 'some_args')
 
-        assert function(Sanka.YaDead) == num_calls
+        assert function(YaDead) == num_calls
 
