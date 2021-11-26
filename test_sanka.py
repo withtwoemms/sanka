@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from sanka import Sanka
+from sanka import sanka
 from sanka import YaDead
 
 
@@ -8,7 +8,7 @@ class SankaTest(TestCase):
 
     def test_count_calls_for_no_arg_function(self):
 
-        @Sanka
+        @sanka
         def function():
             pass
 
@@ -21,7 +21,7 @@ class SankaTest(TestCase):
 
     def test_count_calls_for_function_with_args(self):
 
-        @Sanka
+        @sanka
         def function(takes, some_args):
             pass
 
@@ -34,10 +34,10 @@ class SankaTest(TestCase):
 
     def test_count_calls_for_multiple_functions(self):
 
-        @Sanka
+        @sanka
         def function1():
             pass
-        @Sanka
+        @sanka
         def function2():
             pass
 
@@ -51,4 +51,26 @@ class SankaTest(TestCase):
 
         assert function1(YaDead) == num_calls_for_first_function
         assert function2(YaDead) == num_calls_for_second_function
+
+    def test_sanka_decorator_only_accepts_function_as_callback(self):
+
+        with self.assertRaises(TypeError):
+            @sanka(callback='not a function')
+            def function():
+                pass
+
+    def test_sanka_decorator_can_accept_callback(self):
+        side_effect_counts = []
+
+        @sanka(callback=lambda count: side_effect_counts.append(count))
+        def function():
+            pass
+
+        num_calls = 2
+
+        for i in range(num_calls):
+            function()
+
+        assert side_effect_counts == list(range(1, num_calls + 1))
+        assert function(YaDead) == num_calls
 
