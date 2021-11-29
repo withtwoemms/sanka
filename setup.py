@@ -1,3 +1,4 @@
+from os import environ as envvars
 from pathlib import Path
 from setuptools import setup
 
@@ -7,7 +8,7 @@ setup(
     description='a function decorator for surfacing dead code',
     long_description=Path(__file__).absolute().parent.joinpath('README.md').read_text(),
     long_description_content_type='text/markdown',
-    use_scm_version=True,
+    use_scm_version={'local_scheme': 'no-local-version'} if envvars.get('LOCAL_VERSION_SCHEME') else True,
     author='Emmanuel I. Obi',
     maintainer='Emmanuel I. Obi',
     maintainer_email='withtwoemms@gmail.com',
