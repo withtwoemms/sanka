@@ -1,9 +1,12 @@
+from pathlib import Path
 from setuptools import setup
 
 
 setup(
     name='sanka',
     description='a function decorator for surfacing dead code',
+    long_description=Path(__file__).absolute().parent.joinpath('README.md').read_text(),
+    long_description_content_type='text/markdown',
     use_scm_version=True,
     author='Emmanuel I. Obi',
     maintainer='Emmanuel I. Obi',
