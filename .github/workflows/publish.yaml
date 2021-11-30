@@ -35,6 +35,9 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Install dependencies
+        run: pip install nox wheel
+
       - name: Build distribution 📦
         run: PYTHONWARNINGS=ignore LOCAL_VERSION_SCHEME=true nox -s build-sanka
 
