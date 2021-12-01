@@ -1,5 +1,6 @@
 from os import environ as envvars
 from pathlib import Path
+from setuptools import find_packages
 from setuptools import setup
 
 
@@ -25,6 +26,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
+    package=find_packages(),
     setup_requires=[
         'setuptools_scm==5.0.1'
     ],
