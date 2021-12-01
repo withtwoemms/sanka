@@ -6,6 +6,7 @@ from setuptools import setup
 setup(
     name='sanka',
     description='a function decorator for surfacing dead code',
+    license='MIT',
     long_description=Path(__file__).absolute().parent.joinpath('README.md').read_text(),
     long_description_content_type='text/markdown',
     use_scm_version={'local_scheme': 'no-local-version'} if envvars.get('LOCAL_VERSION_SCHEME') else True,
