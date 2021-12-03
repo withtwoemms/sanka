@@ -16,21 +16,21 @@ class Sanka:
             raise TypeError(f'Callback must be Callable not "{type(callback).__name__}"')
 
         self.func = func
-        self.call_count = 0
+        self.calls = 0
         self.callback = callback
         self.only_callback_when_dead = only_callback_when_dead
 
     def __call__(self, *args, **kwargs):
         if YaDead in args:
             if self.callback and self.only_callback_when_dead:
-                self.callback(self.call_count)
-            return self.call_count
+                self.callback(self.calls)
+            return self.calls
         else:
             result = self.func(*args, **kwargs)
-            self.call_count += 1
+            self.calls += 1
 
             if self.callback and not self.only_callback_when_dead:
-                self.callback(self.call_count)
+                self.callback(self.calls)
 
             return result
 
