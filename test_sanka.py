@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from sanka import sanka
+from sanka import Sanka
 from sanka import YaDead
 
 
@@ -61,6 +62,7 @@ class SankaTest(TestCase):
         assert function2(YaDead) == num_calls_for_second_function
 
     def test_sanka_decorator_can_detect_no_function_calls(self):
+
         @sanka
         def function():
             pass
@@ -75,6 +77,7 @@ class SankaTest(TestCase):
                 pass
 
     def test_sanka_decorator_can_accept_callback(self):
+
         @sanka(callback=lambda count: count)
         def function():
             pass
@@ -103,4 +106,20 @@ class SankaTest(TestCase):
 
         assert side_effect_counts == list(range(1, num_calls + 1))
         assert function(YaDead) == num_calls
+
+    def test_Sanka__repr(self):
+
+        def function():
+            pass
+
+        num_calls = 2
+
+        f = Sanka(function)
+
+        assert repr(f) == f'<Sanka({function.__name__}), calls: 0>'
+
+        for i in range(num_calls):
+            f()
+
+        assert repr(f) == f'<Sanka({function.__name__}), calls: {num_calls}>'
 
