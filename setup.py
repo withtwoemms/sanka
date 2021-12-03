@@ -26,7 +26,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
-    package=find_packages(),
+    py_modules=['sanka'],
     setup_requires=[
         'setuptools_scm==5.0.1'
     ],

@@ -18,7 +18,7 @@ jobs:
           python-version: 3.9
 
       - name: Provision virtual environment and run tests
-        run: pip install nox wheel && nox -s sanka-venv-3.9
+        run: pip install nox && nox -s sanka
 
 
   publish:
@@ -36,7 +36,7 @@ jobs:
           python-version: 3.9
 
       - name: Install dependencies
-        run: pip install nox wheel
+        run: pip install nox
 
       - name: Build distribution 📦
         run: PYTHONWARNINGS=ignore LOCAL_VERSION_SCHEME=true nox -s build-sanka
