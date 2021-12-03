@@ -34,6 +34,9 @@ class Sanka:
 
             return result
 
+    def __repr__(self):
+        return f'<Sanka({self.func.__name__}), calls: {self.calls}>'
+
     def __str__(self):
         return self.func.__name__
 
