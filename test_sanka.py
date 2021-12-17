@@ -41,6 +41,36 @@ class SankaTest(TestCase):
 
         assert function(YaDead) == num_calls
 
+    def test_count_calls_for_class_method(self):
+
+        class Class:
+            @sanka
+            def method(self):
+                pass
+
+        num_calls = 2
+
+        for i in range(num_calls):
+            Class().method()
+
+        assert Class().method(YaDead) == num_calls
+
+    def test_count_calls_for_class_method_with_callback(self):
+        store = []
+
+        class Class:
+            @sanka(callback=lambda count: store.append(count))
+            def method(self):
+                pass
+
+        num_calls = 2
+
+        for i in range(num_calls):
+            Class().method()
+
+        assert Class().method(YaDead) == num_calls
+        assert store == [num_calls]
+
     def test_count_calls_for_multiple_functions(self):
 
         @sanka
