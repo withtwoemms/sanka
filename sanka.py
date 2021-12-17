@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Callable
 from typing import TypeVar
 
@@ -19,6 +20,9 @@ class Sanka:
         self.calls = 0
         self.callback = callback
         self.only_callback_when_dead = only_callback_when_dead
+
+    def __get__(self, instance, owner):
+        return partial(self, instance)
 
     def __call__(self, *args, **kwargs):
         if YaDead in args:
