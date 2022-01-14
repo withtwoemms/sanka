@@ -11,6 +11,7 @@ class Sanka:
         self,
         func: Callable,
         callback: Callable[[int], T] = None,
+        cumulative: bool = True,
         only_callback_when_dead: bool = True
     ):
         if callback and not callable(callback):
@@ -19,6 +20,7 @@ class Sanka:
         self.func = func
         self.calls = 0
         self.callback = callback
+        self.cumulative = cumulative
         self.only_callback_when_dead = only_callback_when_dead
 
     def __get__(self, instance, owner):
@@ -31,7 +33,10 @@ class Sanka:
             return self.calls
         else:
             result = self.func(*args, **kwargs)
-            self.calls += 1
+            if self.cumulative:
+                self.calls += 1
+            else:
+                self.calls = 1
 
             if self.callback and not self.only_callback_when_dead:
                 self.callback(self.calls)
@@ -48,13 +53,14 @@ class Sanka:
 def sanka(
     function: Callable = None,
     callback: Callable[[int], T] = None,
+    cumulative: bool = True,
     only_callback_when_dead: bool = True
 ):
     if function:
         return Sanka(function)
     else:
         def wrapper(function):
-            return Sanka(function, callback, only_callback_when_dead)
+            return Sanka(function, callback, cumulative, only_callback_when_dead)
         return wrapper
 
 

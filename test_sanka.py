@@ -119,6 +119,26 @@ class SankaTest(TestCase):
 
         assert function(YaDead) == num_calls
 
+    def test_sanka_can_control_call_count_accumulation(self):
+        side_effect_counts = []
+
+        @sanka(
+            callback=lambda count: side_effect_counts.append(count),
+            cumulative=False,
+            only_callback_when_dead=False
+        )
+        def function():
+            pass
+
+        num_calls = 5
+
+        for i in range(num_calls):
+            function()
+
+        assert side_effect_counts == [1] * num_calls
+        assert sum(side_effect_counts) == num_calls
+        assert function(YaDead) == 1
+
     def test_sanka_can_call_back_every_call(self):
         side_effect_counts = []
 
