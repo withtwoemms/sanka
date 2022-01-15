@@ -18,7 +18,7 @@ jobs:
           python-version: 3.9
 
       - name: Provision virtual environment and run tests
-        run: pip install nox && nox -s sanka
+        run: pip install nox && nox -s install test
 
 
   publish:
@@ -39,7 +39,7 @@ jobs:
         run: pip install nox
 
       - name: Build distribution 📦
-        run: PYTHONWARNINGS=ignore LOCAL_VERSION_SCHEME=true nox -s build-sanka
+        run: PYTHONWARNINGS=ignore LOCAL_VERSION_SCHEME=true nox -s build
 
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
