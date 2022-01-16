@@ -5,7 +5,28 @@
 [![publish](https://github.com/withtwoemms/sanka/workflows/publish/badge.svg)](https://github.com/withtwoemms/sanka/actions?query=workflow%3Apublish)
 [![codecov](https://codecov.io/gh/withtwoemms/sanka/branch/main/graph/badge.svg?token=95KK3WG5QW)](https://codecov.io/gh/withtwoemms/sanka)
 
+# Quick start
+
+The "examples/" directory is home to `sanka` use cases.
+```
+examples/
+├── actionpack/
+│   ├── example.py
+│   └── requirements.txt
+└── ...
+```
+A docker image capable of running an example can be built using a `nox` command:
+```
+EXAMPLE=actionpack nox -s image
+```
+where the example referenced in the image can be specified using the "EXAMPLE" environment variable.
+To run a container, execute something like the following:
+```
+docker run -e RUN_DURATION_SECONDS=10 -e CALL_DELAY_SECONDS=5 sanka:0.3.0
+```
+
 # Setup
+
 Ensure `nox` is installed.
 ```
 pip install nox
