@@ -11,6 +11,7 @@ VENV = f'{PROJECT_NAME}-venv'
 TESTDIR = '.'
 TESTNAME = envvar.get('TESTNAME', '')
 USEVENV = envvar.get('USEVENV', False)
+EXAMPLE = envvar.get('EXAMPLE', 'actionpack')
 
 external = False if USEVENV else True
 supported_python_versions = [
@@ -39,7 +40,7 @@ def image_name():
 
 @nox.session(name=session_name('image'), python=supported_python_versions)
 def image(session):
-    command = f'docker build -t {image_name()} .'
+    command = f'docker build -t {image_name()} --build-arg EXAMPLE={EXAMPLE} .'
     session.run(*command.split(' '))
 
 
