@@ -9,7 +9,7 @@ from subprocess import PIPE
 from typing import List
 
 
-OFFICIAL = strtobool(envvar.get('OFFICIAL', 'True'))
+OFFICIAL = strtobool(envvar.get('OFFICIAL', 'False'))
 PROJECT_NAME = 'sanka'
 VENV = f'{PROJECT_NAME}-venv'
 TESTDIR = '.'
