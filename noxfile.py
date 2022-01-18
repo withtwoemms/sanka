@@ -1,11 +1,15 @@
 import nox
+import re
 
+from distutils.util import strtobool
 from os import environ as envvar
 from subprocess import check_output
 from subprocess import Popen
 from subprocess import PIPE
+from typing import List
 
 
+OFFICIAL = strtobool(envvar.get('OFFICIAL', 'False'))
 PROJECT_NAME = 'sanka'
 VENV = f'{PROJECT_NAME}-venv'
 TESTDIR = '.'
@@ -14,6 +18,8 @@ USEVENV = envvar.get('USEVENV', False)
 EXAMPLE = envvar.get('EXAMPLE', 'actionpack')
 
 external = False if USEVENV else True
+unofficial_semver = r'^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?(.+)$'
+official_semver = r'^([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$'
 supported_python_versions = [
     '3.6',
     '3.7',
@@ -28,19 +34,49 @@ def session_name(suffix: str):
     return f'{VENV}-{suffix}' if USEVENV else suffix
 
 
-def project_version():
-    tags = Popen('git tag'.split(), stdout=PIPE)
-    output = check_output('tail -1'.split(), stdin=tags.stdout)
-    return output.decode().strip('\n')
+def semver(version: str):
+    _semver = re.search(official_semver, version) or re.search(unofficial_semver, version)
+    if _semver:
+        return [val for val in _semver.groups() if val]
 
 
-def image_name():
-    return f'{PROJECT_NAME}:{project_version()}'
+def is_official(semver: List[str]):
+    """
+    TODO (withtwoemms) -- create SemVer type to replace List[str]
+    """
+    if len(semver) > 3:
+        return False
+    else:
+        return True
+
+
+def latest_version(official: bool = False):
+    output = check_output('git for-each-ref --sort=creatordate --format %(refname) refs/tags'.split())
+    all_versions = (
+        version.lstrip('refs/tags/')
+        for version in reversed(output.decode().strip('\n').split('\n'))
+    )
+
+    if not official:
+        return next(all_versions)
+
+    for version in all_versions:
+        if official and is_official(semver(version)):
+            return version
+
+
+def image_name(official: bool = False):
+    return f'{PROJECT_NAME}:{latest_version(official=official)}'
+
+
+@nox.session(name=session_name('version'), python=supported_python_versions)
+def version(session):
+    print(latest_version(official=OFFICIAL))
 
 
 @nox.session(name=session_name('image'), python=supported_python_versions)
 def image(session):
-    command = f'docker build -t {image_name()} --build-arg EXAMPLE={EXAMPLE} .'
+    command = f'docker build -t {image_name(official=OFFICIAL)} -f examples/{EXAMPLE}/Dockerfile --build-arg EXAMPLE={EXAMPLE} .'
     session.run(*command.split(' '))
 
 
