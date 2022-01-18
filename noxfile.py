@@ -40,7 +40,7 @@ def image_name():
 
 @nox.session(name=session_name('image'), python=supported_python_versions)
 def image(session):
-    command = f'docker build -t {image_name()} --build-arg EXAMPLE={EXAMPLE} .'
+    command = f'docker build -t {image_name()} -f examples/{EXAMPLE}/Dockerfile --build-arg EXAMPLE={EXAMPLE} .'
     session.run(*command.split(' '))
 
 
